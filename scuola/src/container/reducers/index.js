@@ -32,12 +32,30 @@ export const onboardingReducer = (state = initialOnboardingState, action) => {
                 isFetching: false, 
                 isLoggedIn: true
             };
+
         case types.REGISTER_FAILURE: 
             return { 
                 ...state,
                 error: action.payload,
                 isFetching: false
+            };
+        
+        case types.LOGIN_SUCCESS:
+            return {
+                ...state,
+                email: action.payload.email,
+                password: action.payload.password,
+                isFetching: false,
+                isLoggedIn: true,
+            };
+        
+        case types.LOGIN_FAILURE:
+            return{ 
+                ...state,
+                error: action.payload,
+                isFetching: false
             }
+
         default:
             return state
     }
