@@ -1,8 +1,11 @@
 import * as types from './actionTypes';
-import { Axios } from '../../utils/axios';
+import { Axios, axiosWithAuth } from '../../utils/axios';
+import Cookies from 'js-cookie';
+import { history } from '../../index'
 
 const registerUrl = 'api/auth/register';
 const loginUrl = 'api/auth/login';
+const userUrl = 'api/user';
 
 export const register = credentials => dispatch => { 
     dispatch({ type: types.REQUEST_START });
@@ -10,9 +13,8 @@ export const register = credentials => dispatch => {
     .post(registerUrl, credentials)
     .then(res => { 
         console.log(res)
-        localStorage.setItem('username', res.data.username);
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('userId', res.data.id);
+        Cookies.set('token', res.data.token);
+        console.log('token')
         dispatch({ 
             type: types.REGISTER_SUCCESS, payload: res.data
         });
@@ -29,16 +31,43 @@ export const login = credentials => dispatch => {
     Axios()
     .post(loginUrl, credentials)
     .then(res => { 
-        console.log(res)
-        localStorage.setItem('email', res.data.email);
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('userId', res.data.id)
+        console.log(res);
+        Cookies.set('token', res.data.token)
+        console.log('token')
+      
         dispatch({ 
             type: types.LOGIN_SUCCESS, payload: res.data
         })
+        history.push('/users');
     })
     .catch(error => { 
         dispatch({ 
             type: types.LOGIN_FAILURE, payload: error.message})
     })
 }
+
+export const logout = () => { 
+    Cookies.remove();
+    return{ type: types.LOGOUT}
+} 
+
+
+export const getUsers = () => dispatch => {
+    dispatch({ type: types.REQUEST_START });
+    axiosWithAuth()
+    // Axios()
+    .get(userUrl)
+    .then(res => { 
+        console.log('utilisateurs', res);
+        dispatch({
+            type: types.GET_USERS_SUCCESS, 
+            payload: res.data
+        })
+    })
+    .catch(error => {
+        dispatch({
+            type: types.GET_USERS_FAILURE,
+            payload: error.message
+        });
+    });
+};

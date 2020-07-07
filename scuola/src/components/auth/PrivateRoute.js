@@ -1,10 +1,11 @@
 import React from 'react';
-import { Route, Redirct } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const PrivateRoute = ({ component:Component, ...rest }) => (
     <Route
         { ...rest}
-        render={props => localStorage.getItem('token')
+        render={props => Cookies.get('token')
         ? (<Component { ...props}/>)
         : (<Redirect to='/login'/>)
     }

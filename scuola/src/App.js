@@ -2,6 +2,9 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Onboard from './components/auth/Onboard';
+import PrivateRoute from './components/auth/PrivateRoute';
+import Users from './components/auth/Users';
 
 const App = () => { 
 
@@ -18,10 +21,15 @@ const App = () => {
                 path='/login'
                 component={Login}
             />
-            {/* <PrivateRoute
-                path='/home'
+            <Route
+                exact
+                path='/users'
+                component={Users}
+            />
+            <PrivateRoute
+                path='/onboard'
                 component={Onboard}
-            />  */}
+            />
         </div>
     )
 }
