@@ -12,9 +12,9 @@ export const register = credentials => dispatch => {
     Axios()
     .post(registerUrl, credentials)
     .then(res => { 
-        console.log(res)
         Cookies.set('token', res.data.token);
         console.log('token')
+        history.push('/users');
         dispatch({ 
             type: types.REGISTER_SUCCESS, payload: res.data
         });
@@ -28,17 +28,15 @@ export const register = credentials => dispatch => {
 
 export const login = credentials => dispatch => { 
     dispatch({ type: types.REQUEST_START});
-    Axios()
+    axiosWithAuth()
     .post(loginUrl, credentials)
     .then(res => { 
         console.log(res);
-        Cookies.set('token', res.data.token)
-        console.log('token')
-      
+        Cookies.set('token', res.data)
+        history.push('/users');
         dispatch({ 
             type: types.LOGIN_SUCCESS, payload: res.data
         })
-        history.push('/users');
     })
     .catch(error => { 
         dispatch({ 
@@ -55,7 +53,6 @@ export const logout = () => {
 export const getUsers = () => dispatch => {
     dispatch({ type: types.REQUEST_START });
     axiosWithAuth()
-    // Axios()
     .get(userUrl)
     .then(res => { 
         console.log('utilisateurs', res);

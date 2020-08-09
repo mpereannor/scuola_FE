@@ -1,49 +1,102 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { connect } from 'react-redux';
-import { register } from '../../container/actions/actionCreators'
+import { connect } from "react-redux";
+import { register } from "../../container/actions/actionCreators";
+import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import { Button, TextField } from "@material-ui/core";
+import { theme } from "../../theme";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+      width: "25ch",
+    },
+  },
+  input: {
+      "&:invalid": { 
+        //   border: "#f17808 solid 2px"
+      }
+  }
+}));
 
 const Register = (props) => {
+  const classes = useStyles();
   const { register, handleSubmit, errors } = useForm();
-//   const onSubmit = data => console.log(data);
-  const onSubmit = data => props.register(data);
+  const onSubmit = (data) => props.register(data);
+  const emailRegex = '/^\S+@\S+\.\S+$/';
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-        <p>username</p>
-        <input
-            name="username"
-            ref={register({ required: true, maxLength: 20 })}
-            />
-        {errors.username && 'Username is required'}
-        <p>fullname</p>
-        <input
-            name="fullname"
-            ref={register({ required: true, maxLength: 20 })}
-            />
-        {errors.fullname && 'Full name is required'}
-        <p>email</p>
-        <input
-            name="email"
-            ref={register({ required: true, pattern: /^\S+@\S+\.\S+$/
-            })}
-            />
-        {errors.email && 'Please enter your email'}
-        <p>password</p>
-        <input
-            name="password"
-            ref={register({ required: true })}
-            />
-        {errors.password && 'Password is required'}
-        <p>password confirmation</p>
-        <input
-            name="passwordConfirmation"
-            ref={register({ required: true })}
+    <div>
+      <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
+        <TextField
+          id="username"
+          inputRef={register}
+          name="username"
+          label="username"
+          variant="outlined"
+          required
+          inputProps={{ maxLength: 20 }}
         />
-        {errors.passwordConfirmation && 'Password does not match'}
-        <input type='submit'/>
-    </form>
+        <TextField
+          id="fullname"
+          inputRef={register}
+          name="fullname"
+          label="fullname"
+          variant="outlined"
+          required
+          inputProps={{ maxLength: 50 }}
+
+        />
+        <TextField
+          id="email"
+          inputRef={register}
+          name="email"
+          label="email"
+          variant="outlined"
+          required
+        //   inputProps={ { pattern: emailRegex }}
+        />
+        
+        <TextField
+          id="password"
+          inputRef={register}
+          name="password"
+          label="password"
+          type="password"
+          variant="outlined"
+          required
+        />
+
+        <TextField
+          id="passwordConfirmation"
+          inputRef={register}
+          name="passwordConfirmation"
+          label="password confirmation"
+          type="password"
+          variant="outlined"
+          required
+        />
+
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+        >
+          Register
+        </Button>
+      </form>
+
+      <div>
+        <p>Already Have an Account?</p>
+        <Link to="/login">
+          Login
+        </Link>
+      </div>
+    </div>
   );
 };
 
-export default connect(state => state.onboard, { register })(Register);
+export default connect((state) => state.onboard, { register })(Register);

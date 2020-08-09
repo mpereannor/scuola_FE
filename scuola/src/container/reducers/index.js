@@ -1,19 +1,13 @@
 import * as types from '../actions/actionTypes';
 import Cookies from 'js-cookie';
 const initialOnboardingState = { 
-    cookie: Cookies.get('token') || '',
-    username: Cookies.get('username') || '',
-    id: Cookies.get('id'),
-    fullname: Cookies.get('fullname') || '',
-    email: Cookies.get('email') || '',
-    password: Cookies.get('password') || '',
-    // id : localStorage.getItem('id') || '',
-    // username: localStorage.getItem('username') || '',
-    // fullname: localStorage.getItem('fullname') || '',
-    // email: localStorage.getItem('email') || '',
-    // password: localStorage.getItem('password') || '',
-    // passwordConfirmation: localStorage.getItem('passwordConfirmation') || '',
-    // token: localStorage.getItem('token'),
+    // tokenn: Cookies.get('token') || '',
+    // username: Cookies.get('username') || '',
+    // id: Cookies.get('id'),
+    // fullname: Cookies.get('fullname') || '',
+    // email: Cookies.get('email') || '',
+    // password: Cookies.get('password') || '',
+    user : {},
     message: '',
     error: {},
     isFetching: false, 
@@ -31,9 +25,10 @@ export const onboardingReducer = (state = initialOnboardingState, action) => {
         case types.REGISTER_SUCCESS:
             return {
                 ...state,
-                id: action.payload.id,
-                username: action.payload.username,
-                email: action.payload.email,
+                // id: action.payload.id,
+                // username: action.payload.username,
+                // email: action.payload.email,
+                user: action.payload,
                 message: action.payload.message,
                 isFetching: false, 
                 isLoggedIn: true
@@ -42,6 +37,7 @@ export const onboardingReducer = (state = initialOnboardingState, action) => {
         case types.REGISTER_FAILURE: 
             return { 
                 ...state,
+                user: {},
                 error: action.payload,
                 isFetching: false
             };
@@ -49,8 +45,9 @@ export const onboardingReducer = (state = initialOnboardingState, action) => {
         case types.LOGIN_SUCCESS:
             return {
                 ...state,
-                email: action.payload.email,
-                password: action.payload.password,
+                // email: action.payload.email,
+                // password: action.payload.password,
+                user: {},
                 isFetching: false,
                 isLoggedIn: true,
             };
@@ -58,6 +55,7 @@ export const onboardingReducer = (state = initialOnboardingState, action) => {
         case types.LOGIN_FAILURE:
             return{ 
                 ...state,
+                user: {},
                 error: action.payload,
                 isFetching: false
             }

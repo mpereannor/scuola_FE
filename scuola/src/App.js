@@ -21,7 +21,7 @@ const App = () => {
                 path='/login'
                 component={Login}
             />
-            <Route
+            <PrivateRoute
                 exact
                 path='/users'
                 component={Users}

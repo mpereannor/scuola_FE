@@ -8,7 +8,6 @@ const useCookie = ( key, defaultValue ) => {
         setItem(key, value, numberOfDays);
     };
     return [cookie, updateCookie];
-    //todo : add custom functions for cookie mgt
 }
 
 const getItem = key => 
